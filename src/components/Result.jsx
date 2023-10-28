@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { btMovieActions } from '../store/ReactMovie/slice'
+import cn from 'classnames'
 
 const Result = () => {
-    const {chairsBooking} = useSelector(state => state.btMovie)
+    const {chairsBooking, chairsJustBooked} = useSelector(state => state.btMovie)
     const dispatch = useDispatch()
     
     return (
@@ -50,9 +51,17 @@ const Result = () => {
                     </tr>
                 </tbody>
             </table>
-            <button className="btn btn-success" onClick={() => {
-                dispatch(btMovieActions.checkOut(""))
-            }}>Thanh Toán</button>
+            <div className="d-flex gap-2">
+                <button className="btn btn-success" onClick={() => {
+                    dispatch(btMovieActions.checkOut(""))
+                }}>Thanh Toán</button>
+                <button className={cn('btn btn-danger', {
+                    disabled: !chairsJustBooked.length
+                })} onClick={() => {
+                    dispatch(btMovieActions.cancelBookedChairs(""))
+                }}>Huỷ đặt vé</button>
+            </div>
+            
         </div>
     )
 }

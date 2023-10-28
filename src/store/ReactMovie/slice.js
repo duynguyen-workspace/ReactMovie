@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     chairsBooking: [],
-    chairsBooked: []
+    chairsBooked: [],
+    chairsJustBooked: [],
 }
 
 export const btMovieSlice = createSlice({
@@ -22,7 +23,16 @@ export const btMovieSlice = createSlice({
         },
         checkOut: (state, action) => {
             state.chairsBooked = [...state.chairsBooked,...state.chairsBooking]
+            state.chairsJustBooked = [...state.chairsBooking]
             state.chairsBooking = []
+        },
+        cancelBookedChairs: (state, action) => {
+            const index = state.chairsBooked.findIndex((value) => value.soGhe == state.chairsJustBooked[0].soGhe)
+
+            if (index != -1) {
+                state.chairsBooked.splice(index, state.chairsJustBooked.length)
+                state.chairsJustBooked = []
+            }
         }
     }
 })
